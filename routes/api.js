@@ -37,13 +37,13 @@ module.exports = function (app) {
           case 0:
             // american - to - british
             chosenLocale = validLocale[localeIndex];
-            console.log(chosenLocale);
+            console.log("Translation: ", chosenLocale);
             break;
           
           case 1:
             // british - to - american
             chosenLocale = validLocale[localeIndex];
-            console.log(chosenLocale);
+            console.log("Translation: ", chosenLocale);
             break;
           
           default:
@@ -51,6 +51,9 @@ module.exports = function (app) {
               "error":"Locale does not exist"
             });
         }
+
+        //------Translating from American-to-British--------
+        console.log(inputText);
         res.json({
         "text": inputText,
         "translation": "N/A"
