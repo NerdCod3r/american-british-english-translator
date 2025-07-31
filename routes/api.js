@@ -27,7 +27,7 @@ module.exports = function (app) {
         res.json({
           "error":"No text to translate"
         });
-      } else if (!inputText && !locale ){
+      } else if (!inputText || !locale ){
         res.json({
           "error": "Required field(s) missing"
         });
