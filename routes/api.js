@@ -52,12 +52,31 @@ module.exports = function (app) {
             });
         }
 
+        const inputsWordArray = inputText.split(" ");
+        let translatedWordsArray = [];
+
         //------Translating from American-to-British--------
-        console.log(inputText);
+        if ( chosenLocale === "american-to-british" ){
+            const translatingObject = new Translator("american");
+            translatedWordsArray = translatingObject.americanTranslate(inputsWordArray);
+        } else if ( chosenLocale === "british-to-american" ) {
+          const translatingObject = new Translator("british");
+          translatingObject.britishTranslate(inputsWordArray);
+        }
+
+        if ( translatedWordsArray.length !== 0 ){
+          const Translation = translatedWordsArray.join(" ");
+          res.json({
+          "text": inputText,
+          "translation": Translation
+          });
+      } else {
         res.json({
-        "text": inputText,
-        "translation": "N/A"
-      });
+          "text": inputText,
+          "translation": inputText
+        });
+      }
+        
       }
     });
 };
