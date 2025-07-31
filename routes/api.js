@@ -27,7 +27,11 @@ module.exports = function (app) {
         res.json({
           "error":"No text to translate"
         });
-      } else if (inputText.length !== 0 && validLocale.indexOf(locale) !== -1){
+      } else if (!inputText && !locale ){
+        res.json({
+          "error": "Required field(s) missing"
+        });
+      }else if (inputText.length !== 0 && validLocale.indexOf(locale) !== -1){
 
         const localeIndex = validLocale.indexOf(locale);
         let chosenLocale = null;
