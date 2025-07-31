@@ -17,7 +17,7 @@ module.exports = function (app) {
       } else{
         const inputText = req.body.text;
         const locale = req.body.locale;
-
+        console.log("Input text: ", inputText.length);
         if ( validLocale.indexOf(locale) === -1 ){
           console.log({
             "error":"Invalid value for locale field"
