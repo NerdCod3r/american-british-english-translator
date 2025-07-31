@@ -25,7 +25,7 @@ module.exports = function (app) {
           res.json({
             "error": "Invalid value for locale field"
           });
-        } else if ( inputText.length === 0 ) {
+        } else if ( inputText === "" ) {
           console.log({
             "error":'No text to translate'
           })
