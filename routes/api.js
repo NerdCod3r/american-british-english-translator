@@ -14,6 +14,10 @@ module.exports = function (app) {
         res.json({
           "error": "Required field(s) missing"
         });
+      } else if (!req.body.text){
+        res.json({
+            "error":"No text to translate"
+          });
       } else{
         const inputText = req.body.text;
         const locale = req.body.locale;
@@ -24,13 +28,6 @@ module.exports = function (app) {
           });
           res.json({
             "error": "Invalid value for locale field"
-          });
-        } else if ( inputText === "" ) {
-          console.log({
-            "error":'No text to translate'
-          })
-          res.json({
-            "error":"No text to translate"
           });
         } else if (inputText.length !== 0 && validLocale.indexOf(locale) !== -1){
 
