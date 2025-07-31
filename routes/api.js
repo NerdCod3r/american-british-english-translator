@@ -73,7 +73,7 @@ module.exports = function (app) {
       } else {
         res.json({
           "text": inputText,
-          "translation": inputText
+          "translation": "Everything looks good to me!"
         });
       }
         
