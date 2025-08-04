@@ -10,22 +10,19 @@ module.exports = function (app) {
 
   app.route('/api/translate')
     .post((req, res) => {
-      if (!req.body.text || !req.body.locale ){
+      if ( req.body.text === undefined || req.body.locale === undefined ){
         res.json({
           "error": "Required field(s) missing"
         });
-      } else if (!req.body.text){
+      } else if ( req.body.text === '' ){
         res.json({
             "error":"No text to translate"
           });
       } else{
         const inputText = req.body.text;
         const locale = req.body.locale;
-        console.log("Input text: ", inputText.length);
+
         if ( validLocale.indexOf(locale) === -1 ){
-          console.log({
-            "error":"Invalid value for locale field"
-          });
           res.json({
             "error": "Invalid value for locale field"
           });
