@@ -6,8 +6,8 @@ const britishOnly = require('./british-only.js');
 const AmericanToBritishTime = require("./american-time-conversion.js");
 const americanToBritishTimeObject = new AmericanToBritishTime();
 
-const britishToAmericanTime = require("./british-time-conversion.js");
-const britishToAmericanTimeObject = new britishToAmericanTime();
+const BritishToAmericanTime = require("./british-time-conversion.js");
+const britishToAmericanTimeObject = new BritishToAmericanTime();
 
 const AmericanTitleConversion = require("./american-title-conversion.js");
 const AmericanToBritishTitleObject = new AmericanTitleConversion();
@@ -95,46 +95,48 @@ class Translator {
      * American English spelling.
      * @param {Array} inputCommunicationArray 
      */
-    britishTranslate(inputCommunicationArray){
-        let translatedTexts = [];
-        for ( let britishIndex = 0; britishIndex < inputCommunicationArray.length; britishIndex++ ) {
-            const currWord = inputCommunicationArray[britishIndex];
-            if ( this.isBritishTime(currWord) ){
-                console.log(currWord, " is British time.");
-            } else if ( this.isBritishTitle(currWord) ){
-                console.log(currWord, " is a British title.");
-            } else {
-                console.log(currWord, " is a regular British word.");
+    britishTranslate(input){
+        let translation = input;
+        // convert words
+        const wordLookup = {
+            ...britishOnly
+        };
+
+        const wordRegex = new RegExp(Object.keys(wordLookup).join("|"), 'gi');
+        const matchingWords = translation.match(wordRegex);
+        if ( matchingWords ){
+            for ( let word = 0; word < matchingWords.length; word++ ){
+            const  matchingword = matchingWords[word];
+            translation = translation.replace(matchingword, `<span class="highlight">${wordLookup[matchingword]}</span>`);
             }
         }
-    }
 
-    /**
-     * isBritishTime function returns true if the format
-     * of the input time string is from the British english language
-     * Returns false if not.
-     */
-    isBritishTime(time){
-        const britishTimeRegex = /^\d{1,2}.\d{1,2}$/;
-        if ( britishTimeRegex.test(time) ){
-            return true;
+        // convert titles
+        let temp = input.split(" ");
+        for ( let search = 0; search < temp.length;search++ ){
+            let curr_word = temp[search];
+            const Title = curr_word + ".";
+
+            if ( americanToBritishTitles.hasOwnProperty(Title.toLowerCase()) ) {
+                translation = translation.replace(curr_word, `<span class="highlight">${Title}</span>`);
+            }
         }
-        return false;
-    }
 
-    /**
-     * isBritishTitle function returns true if the format 
-     * of the input title is from the British English language
-     * Returns false if not.
-     */
-    isBritishTitle(title){
-        const Title = title + ".";
 
-        if ( americanToBritishTitles.hasOwnProperty(Title.toLowerCase()) ){
-            return true;
+        // convert time
+        const timeRegex = /\d{1,2}.\d{1,2}/g;
+        const matchingTime = translation.match(timeRegex);
+        if ( matchingTime ){
+            for ( let m = 0; m < matchingTime.length; m++ ){
+                const prev = matchingTime[m];
+                let NewTime = prev.replace(".", ":");
+                translation = translation.replace(prev, `<span class="highlight">${NewTime}</span>`);
+            }
         }
-        return false;
+
+        return translation.split(" ");
     }
+
 
 }
 

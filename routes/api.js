@@ -50,17 +50,17 @@ module.exports = function (app) {
                 "error":"Locale does not exist"
               });
           }
-
-          const inputsWordArray = inputText.split(" ");
           let translatedWordsArray = [];
-
           //------Translating from American-to-British--------
           if ( chosenLocale === "american-to-british" ){
+              const inputsWordArray = inputText.split(" ");
               const translatingObject = new Translator("american");
               translatedWordsArray = translatingObject.americanTranslate(inputsWordArray);
-          } else if ( chosenLocale === "british-to-american" ) {
+          } 
+          //-----Translating from British-to-American-----
+          else if ( chosenLocale === "british-to-american" ) {
             const translatingObject = new Translator("british");
-            translatingObject.britishTranslate(inputsWordArray);
+            translatedWordsArray = translatingObject.britishTranslate(inputText);
           }
 
           if ( translatedWordsArray.length !== 0 ){
