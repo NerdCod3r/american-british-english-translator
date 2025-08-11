@@ -50,6 +50,10 @@ class Translator {
      */
     americanTranslate(inputArray){
         let translatedTexts = []
+        const americanSpellings = {
+            ...americanOnly,
+            ...americanToBritishSpelling
+        };
         for ( let index = 0; index < inputArray.length; index++ ){
             const currWord = inputArray[index];
             let translatedText = "";
@@ -78,7 +82,7 @@ class Translator {
 
             } else {
                 const key = currWord.toLowerCase();
-                const translatedBritishWord = americanToBritishSpelling[key];
+                const translatedBritishWord = americanSpellings[key];
                 if ( !translatedBritishWord ){
                     // console.log("No translation for: ", currWord);
                     translatedTexts.push(currWord);
