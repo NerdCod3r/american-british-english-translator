@@ -53,9 +53,8 @@ module.exports = function (app) {
           let translatedWordsArray = [];
           //------Translating from American-to-British--------
           if ( chosenLocale === "american-to-british" ){
-              const inputsWordArray = inputText.split(" ");
               const translatingObject = new Translator("american");
-              translatedWordsArray = translatingObject.americanTranslate(inputsWordArray);
+              translatedWordsArray = translatingObject.americanTranslate(inputText);
           } 
           //-----Translating from British-to-American-----
           else if ( chosenLocale === "british-to-american" ) {

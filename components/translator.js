@@ -20,79 +20,72 @@ class Translator {
             this.inputLanguage = "British";
         }
     }
-    /*
-    isAmericanTime method returns true if a word is an American Time format
-    returns false if it is not.
-    */
-    isAmericanTime(word){
-        const americanRegex = /^\d{1,2}:\d{1,2}$/;
-        if ( americanRegex.test(word) ) {
-            return true;
-        }
-        return false;
+    /**
+     * getAmericanFromBritishSwaps method reverses the key/values
+     * of the methods.
+     */
+    getAmericanFromBritishSwaps(){
+        let dictObject = {};
+        Object.keys(americanToBritishSpelling).map(key=>{
+            dictObject[americanToBritishSpelling[key]] = key;
+        });
+        return dictObject;
     }
-
-    /*
-    isAmericanHonorific method returns true if a word is an American Honorific
-    returns false if it is not
-    */
-   isAmericanHonorific(word){
-    if ( americanToBritishTitles.hasOwnProperty(word.toLowerCase()) ){
-        return true;
-    }
-    return false;
-   }
 
     /**
      * americanTranslate method translates American English spelling into
      * British English spelling.
-     * @param {Array} inputArray 
+     * @param {String} input 
      */
-    americanTranslate(inputArray){
-        let translatedTexts = []
-        const americanSpellings = {
+    americanTranslate(input){
+        let translation = input;
+        // convert words
+        const wordLookup = {
             ...americanOnly,
             ...americanToBritishSpelling
         };
-        for ( let index = 0; index < inputArray.length; index++ ){
-            const currWord = inputArray[index];
-            let translatedText = "";
-            if ( this.isAmericanTime(currWord) ){
 
-            translatedText = americanToBritishTimeObject.setBritishTime(currWord);
-            // console.log("British time result: ", translatedText);
-            const wrappedTranslatedTime = `<span class="highlight">${translatedText}</span>`;
-            translatedTexts.push(wrappedTranslatedTime);
-
-            } else if ( this.isAmericanHonorific(currWord) ) {
-            const translatedTitle = AmericanToBritishTitleObject.convert(currWord);
-            let finalString = "";
-            for ( let char = 0; char < currWord.length - 1; char++ ) {
-                if ( currWord[char] !== translatedTitle[char]){
-                    console.log(":",translatedTitle[char]);
-                    finalString += translatedTitle[char].toUpperCase();
-                } else {
-                    finalString += translatedTitle[char];
-                }
-            }
-
-            // console.log("British title result: ", finalString);
-            const wrappedTranslatedTitle = `<span class="highlight">${finalString}</span>`;
-            translatedTexts.push(wrappedTranslatedTitle);
-
-            } else {
-                const key = currWord.toLowerCase();
-                const translatedBritishWord = americanSpellings[key];
-                if ( !translatedBritishWord ){
-                    // console.log("No translation for: ", currWord);
-                    translatedTexts.push(currWord);
-                } else {
-                    const wrappedTranslation = `<span class="highlight">${translatedBritishWord}</span>`;
-                    translatedTexts.push(wrappedTranslation);
-                }
+        const wordRegex = new RegExp(Object.keys(wordLookup).join("|"), 'gi');
+        const matchingWords = translation.match(wordRegex);
+        if ( matchingWords ){
+            for ( let word = 0; word < matchingWords.length; word++ ){
+            const  matchingword = matchingWords[word];
+            translation = translation.replace(matchingword, `<span class="highlight">${wordLookup[matchingword.toLowerCase()]}</span>`);
             }
         }
-        return translatedTexts;
+
+        // convert titles
+        let temp = input.split(" ");
+        for ( let search = 0; search < temp.length;search++ ){
+            let curr_word = temp[search];
+            const Title = curr_word ;
+
+            if ( americanToBritishTitles.hasOwnProperty(Title.toLowerCase()) ) {
+                let translatedTitle = americanToBritishTitles[Title.toLowerCase()];
+                let updatedCasedTitle = "";
+                for ( let ind = 0; ind < translatedTitle.length; ind++ ){
+                    if ( Title[ind] !== translatedTitle[ind] ){
+                        updatedCasedTitle += translatedTitle[ind].toUpperCase();
+                    } else {
+                        updatedCasedTitle += translatedTitle[ind];
+                    }
+                }
+                translation = translation.replace(curr_word, `<span class="highlight">${updatedCasedTitle}</span>`);
+            }
+        }
+
+        // convert time
+        const timeRegex = /\d{1,2}:\d{1,2}/g;
+        const matchingTime = translation.match(timeRegex);
+        if ( matchingTime ){
+            for ( let m = 0; m < matchingTime.length; m++ ){
+                const prev = matchingTime[m];
+                let NewTime = prev.replace(":", ".");
+                translation = translation.replace(prev, `<span class="highlight">${NewTime}</span>`);
+            }
+        }
+
+        return translation.split(" ");
     }
     /**
      * Translates a sentence from British English spelling to
@@ -103,18 +96,31 @@ class Translator {
         let translation = input;
         // convert words
         const wordLookup = {
-            ...britishOnly
-        };
-
-        const wordRegex = new RegExp(Object.keys(wordLookup).join("|"), 'gi');
-        const matchingWords = translation.match(wordRegex);
-        if ( matchingWords ){
-            for ( let word = 0; word < matchingWords.length; word++ ){
-            const  matchingword = matchingWords[word];
-            translation = translation.replace(matchingword, `<span class="highlight">${wordLookup[matchingword]}</span>`);
-            }
+            ...britishOnly,
+            ...this.getAmericanFromBritishSwaps()
         }
+        Object.keys(wordLookup).map(word =>{
+            const regex = new RegExp(word, "gi");
+            const matchingWords = translation.match(regex);
+            if ( matchingWords ) {
+                let complete = false;
+                while ( !complete ) {
+                    const startIndex = translation.toLowerCase().indexOf(word);
+                    if ( startIndex === -1 ){
+                        complete = true;
+                    } else {
+                        const stopIndex = startIndex + word.length;
+                        if ( (translation[stopIndex] && translation[stopIndex] === " ") || (translation[stopIndex] === undefined) ){
+                            translation = translation.replace(regex, `<span class="highlight">${wordLookup[word]}</span>`);
+                        } else {
+                            complete = true;
+                        }
+                }
+                    }
+            } 
+        });
 
+        //After here, word conversions are proper
         // convert titles
         let temp = input.split(" ");
         for ( let search = 0; search < temp.length;search++ ){
@@ -122,7 +128,17 @@ class Translator {
             const Title = curr_word + ".";
 
             if ( americanToBritishTitles.hasOwnProperty(Title.toLowerCase()) ) {
-                translation = translation.replace(curr_word, `<span class="highlight">${Title}</span>`);
+                let translatedTitle = americanToBritishTitles[Title.toLowerCase()];
+                let updatedCasedTitle = "";
+                for ( let ind = 0; ind < translatedTitle.length; ind++ ){
+                    if ( Title[ind] !== translatedTitle[ind] ){
+                        updatedCasedTitle += translatedTitle[ind].toUpperCase();
+                    } else {
+                        updatedCasedTitle += translatedTitle[ind];
+                    }
+                }
+                updatedCasedTitle += ".";
+                translation = translation.replace(curr_word, `<span class="highlight">${updatedCasedTitle}</span>`);
             }
         }
 

@@ -1,4 +1,4 @@
-class BritishToAmericanTime{
+class britishToAmericanTime{
     setAmericanTime(inputTimeString){
         let convertedTime = "";
         convertedTime = inputTimeString.replace(".", ":");
@@ -7,4 +7,4 @@ class BritishToAmericanTime{
     }
 }
 
-module.exports = BritishToAmericanTime;
+module.exports = britishToAmericanTime;
