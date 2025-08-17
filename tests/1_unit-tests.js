@@ -281,6 +281,18 @@ suite('Unit Tests', () => {
             done();
         
         });
+
+        // 10.
+        test("translate 'Tea time is usually around 4 or 4.30'", (done)=>{
+            const input = 'Tea time is usually around 4 or 4.30';
+            const output = 'Tea time is usually around 4 or 4:30';
+            const result = BritishTranslator.britishTranslate(input).join(" ");
+            const finalResult = result.replace(noHighlightRegex, "");
+
+            assert.equal(finalResult, output);
+            done();
+        
+        });
 });
 
 /*
