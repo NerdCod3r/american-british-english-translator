@@ -9,7 +9,7 @@ let Translator = require('../components/translator.js');
 
 
 suite('Functional Tests', () => {
-    suite("Test POST /api/translate/", async ()=>{
+    suite("Test POST /api/translate/",()=>{
         // 1.
     test("Translation with text AND locale fields", (done)=>{
         chai
