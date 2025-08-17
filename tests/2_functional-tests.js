@@ -16,7 +16,7 @@ const noHighlightRegex = /<span class=\"highlight\">|<\/span>/g;
 suite('Functional Tests', () => {
     suite("Test POST /api/translate/", ()=>{
         // 1.
-    test("Translation with text and locale fields", (done)=>{
+    test("#example", (done)=>{
         chai
         .request(server)
         .post("/api/translate")
