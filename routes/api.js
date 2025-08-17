@@ -64,10 +64,17 @@ module.exports = function (app) {
 
           if ( translatedWordsArray.length !== 0 ){
             const Translation = translatedWordsArray.join(" ");
-            res.json({
+            if ( inputText === Translation ){
+              res.json({
             "text": inputText,
-            "translation": Translation
+            "translation": "Everything looks good to me!"
+              });
+            } else {
+               res.json({
+                "text": inputText,
+                "translation": Translation  
             });
+          }
         } else {
           res.json({
             "text": inputText,

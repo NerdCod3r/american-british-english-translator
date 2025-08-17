@@ -97,7 +97,7 @@ suite('Functional Tests', () => {
         })
         .end(function(err, res){
             assert.equal(res.status, 200);
-            assert.equal;(res.body.error, 'Everything seems good to me!');
+            assert.equal;(res.body.translation, 'Everything looks good to me!');
             done();
         })
     });
