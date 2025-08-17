@@ -7,16 +7,11 @@ chai.use(chaiHttp);
 
 let Translator = require('../components/translator.js');
 
-// Useful objects...
-const BritishTranslator = new Translator("american");
-const AmericanTranslator = new Translator("british");
-const noHighlightRegex = /<span class=\"highlight\">|<\/span>/g;
-
 
 suite('Functional Tests', () => {
-    suite("Test POST /api/translate/", ()=>{
+    suite("Test POST /api/translate/", async ()=>{
         // 1.
-    test("#example", (done)=>{
+    test("Translation with text AND locale fields", (done)=>{
         chai
         .request(server)
         .post("/api/translate")
