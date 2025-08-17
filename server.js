@@ -35,7 +35,7 @@ app.use(function(req, res, next) {
     .send('Not Found');
 });
 
-const portNum = process.env.PORT || 3000;
+const portNum = process.env.PORT;
 
 // Start our server and tests!
 app.listen(portNum, () => {
