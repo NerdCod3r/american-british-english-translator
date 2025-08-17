@@ -14,7 +14,8 @@ const noHighlightRegex = /<span class=\"highlight\">|<\/span>/g;
 
 
 suite('Functional Tests', () => {
-    // 1.
+    suite("Test POST /api/translate/", ()=>{
+        // 1.
     test("Translation with text and locale fields", (done)=>{
         chai
         .request(server)
@@ -44,6 +45,7 @@ suite('Functional Tests', () => {
             done();
         })
     });
+
     // 3.
     test("Translation with missing text", (done)=>{
         chai
@@ -58,7 +60,8 @@ suite('Functional Tests', () => {
             done();
         })
     });
-    // 4.
+
+// 4.
     test("Translation with missing locale field", (done)=>{
         chai
         .request(server)
@@ -72,7 +75,8 @@ suite('Functional Tests', () => {
             done();
         })
     });
-    // 5.
+
+// 5.
     test("Translation with empty text", (done)=>{
         chai
         .request(server)
@@ -87,7 +91,8 @@ suite('Functional Tests', () => {
             done();
         })
     });
-    // 6.
+
+// 6.
     test("Transation with text that needs no translation", (done)=>{
         chai
         .request(server)
@@ -101,5 +106,6 @@ suite('Functional Tests', () => {
             assert.equal;(res.body.translation, 'Everything looks good to me!');
             done();
         })
+    });
     });
 });
