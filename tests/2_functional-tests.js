@@ -21,23 +21,20 @@ suite('Functional Tests', () => {
                 done();
             });
     })
-    /*
-    // 2.
-    test("Translation with text and invalid locale fields", (done)=>{
+
+    // Test #2
+    test("Translation with text and invalid locale field", (done)=>{
         chai
         .request(server)
         .post("/api/translate")
-        .send({
-            "text": "Mangoes are my favorite fruit.",
-            "locale":"american-to-chinese"
-        })
-        .end(function(err, res){
+        .send({"text":"Mangoes are my favorite fruit.", "locale":"american-to-bolonese"})
+        .end((err, res)=>{
             assert.equal(res.status, 200);
-            assert.equal;(res.body.error, 'Invalid value for locale field');
+            assert.equal(res.body.error, "Invalid value for locale field");
             done();
         })
-    });
-
+    })
+    /*
     // 3.
     test("Translation with missing text", (done)=>{
         chai
