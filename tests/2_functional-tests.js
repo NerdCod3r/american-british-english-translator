@@ -34,22 +34,20 @@ suite('Functional Tests', () => {
             done();
         })
     })
-    /*
-    // 3.
+
+    // Test #3
     test("Translation with missing text", (done)=>{
         chai
         .request(server)
         .post("/api/translate")
-        .send({
-            "locale":"american-to-british"
-        })
-        .end(function(err, res){
+        .send({"locale":"american-to-british"})
+        .end((end, res)=>{
             assert.equal(res.status, 200);
-            assert.equal;(res.body.error, 'Required field(s) missing');
+            assert.equal(res.body.error, "Required field(s) missing");
             done();
         })
-    });
-
+    })
+    /*
 // 4.
     test("Translation with missing locale field", (done)=>{
         chai
