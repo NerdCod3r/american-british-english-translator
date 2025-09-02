@@ -6,6 +6,7 @@ const server = require('../server.js');
 chai.use(chaiHttp);
 
 let Translator = require('../components/translator.js');
+const res = require('express/lib/response.js');
 
 
 suite('Functional Tests', () => {
@@ -60,23 +61,20 @@ suite('Functional Tests', () => {
             done();
         })
     })
-    /*
-// 5.
+
+    // Test #5
     test("Translation with empty text", (done)=>{
         chai
         .request(server)
         .post("/api/translate")
-        .send({
-            "text":"",
-            "locale":"american-to-british"
-        })
-        .end(function(err, res){
+        .send({"text":"", "locale":"british-to-american"})
+        .end((err, res)=>{
             assert.equal(res.status, 200);
-            assert.equal;(res.body.error, 'No text to translate');
+            assert.equal(res.body.error, "No text to translate");
             done();
         })
-    });
-
+    })
+    /*
 // 6.
     test("Transation with text that needs no translation", (done)=>{
         chai
