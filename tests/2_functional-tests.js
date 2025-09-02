@@ -74,21 +74,17 @@ suite('Functional Tests', () => {
             done();
         })
     })
-    /*
-// 6.
-    test("Transation with text that needs no translation", (done)=>{
+
+    // Test #6
+    test("Translation with text that needs no translation", (done)=>{
         chai
         .request(server)
         .post("/api/translate")
-        .send({
-            "text": "Mr",
-            "locale":"american-to-british"
-        })
-        .end(function(err, res){
+        .send({"text":"Mr Rudimental has a new pet.", "locale":"american-to-british"})
+        .end((err, res)=>{
             assert.equal(res.status, 200);
-            assert.equal;(res.body.translation, 'Everything looks good to me!');
+            assert.equal(res.body.translation, "Everything looks good to me!");
             done();
         })
-    });
-    */
+    })
 });// end of Main Suite
